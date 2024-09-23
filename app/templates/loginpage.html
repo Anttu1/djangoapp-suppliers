@@ -2,10 +2,10 @@
 
 {% block content %}
 
-<div class="card" style="width:25reml; margin-top: 50px;">
+<div class="card" style="width:30rem; margin-top: 50px;">
 
     <div class="card-header">
-        <h5>Login</h5>
+        <h3>Login</h3>
         <div class="card-body">
             <form method="post" action="/login/">
 
@@ -18,11 +18,11 @@
                     <label>password</label>
                     <input type="password" name="password">
                 </div>
-                <input type="submit" value="Login" class="btn btn-success btn-sm">
-                <input type="button" onclick="window.location.href='/'" class="btn btn-secondary btn-sm" value="Back">
+                <input type="submit" value="Login" class="btn btn-info">
+                <input type="button" onclick="window.location.href='/'" class="btn btn-secondary" value="Back">
             </form>
         </div>
-        <input type="button" onclick="window.location.href='/admin/'" class="btn btn-warning btn-sm" value="Admin pages">
+        <input type="button" onclick="window.location.href='/admin/'" class="btn btn-outline-dark" value="Admin pages">
     </div>
 </div>
 

@@ -17,6 +17,12 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 
+# Jos lisää tämän niin saa helposti admin sivun otsikon oman näköiseksi
+# ts. ei lue "Django admin"
+admin.site.site_header = 'EasyManage app adminpage'
+admin.site.site_title = 'EasyManage'
+admin.site.index_title = 'Adminpage' 
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('app.urls'))

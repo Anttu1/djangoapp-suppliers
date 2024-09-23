@@ -1,0 +1,79 @@
+{% extends 'index.html' %}
+
+{% block content %}
+
+<br />
+<!-- Lisäyslomakkeen paikka -->
+<div id="add-div"></div>
+<br />
+
+<h1>Cars</h1>
+
+<button id="add-btn" onclick="showaddform()" class="btn btn-info">Add new</button>
+<p></p>
+{% for r in cars %}
+<br>
+<div class="card" style="width: 50rem;">
+    <div class="card-body">
+        <h3 class="card-title">{{r.brand}} </h3>
+        <p class="card-text">Model: {{r.model}} | License Plate: {{r.licenseplate}}</p>
+        <h5 class="card-text">Owner: {{r.owner.companyname}}</h5>
+
+
+        <a href="/confirm-delete-car/{{r.id}}/" class="btn btn-outline-danger">Delete</a>
+
+        <a href="/cars-by-supplier/{{r.owner.id}}/" class="btn btn-outline-secondary">{{r.owner.companyname}}´s all
+            Cars</a>
+
+    </div>
+</div>
+
+
+{% empty %}
+
+<div class="card" style="width: 50rem;">
+    <div class="card-body">
+        <p class="card-text">No cars found in the database </p>
+    </div>
+</div>
+
+{%endfor%}
+
+
+<script>
+
+    let y = `
+    <h2 style="color: darkorange;">Please fill in form</h2>
+    
+    <div class="card" style="width: 20rem;">
+        <div class="card-body">
+            <form method="post" action="/add-car/">
+                {%csrf_token %}
+                <input class="card-text" class="card-text" type="text" placeholder="brand" name="brand">
+                <input class="card-text" type="text" placeholder="model" name="model">
+                <input class="card-text" type="text" placeholder="licenseplate" name="licenseplate">
+                <br />
+                <label for="Owner">Owner</label>
+                <select id="owner" name="owner">
+                {% for s in suppliers %}
+                  <option value="{{s.id}}">{{s.companyname}}</option>
+                  {% endfor %}
+                </select>
+                <br/>
+                <input type="submit" value="Confirm" class="btn btn-success btn-sm" name="">
+                <input type="submit" id="hide-btn" class="btn btn-secondary btn-sm" onclick="hideaddform()" value="Cancel" name="">
+            </form>
+        </div>
+    </div>`
+
+    function showaddform() {
+        document.getElementById("add-div").innerHTML = y
+    }
+
+    function hideaddform() {
+        document.getElementById("add-div").innerHTML = ""
+    }
+
+</script>
+
+{% endblock %}

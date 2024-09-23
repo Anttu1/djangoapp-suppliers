@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from .models import Supplier, Product
+from .models import Supplier, Product, Customer, Car
 from django.contrib.auth import authenticate, login, logout
 
 # #LANDING AFTER LOGIN
@@ -41,13 +41,11 @@ def productlistview(request):
          return render(request, 'loginpage.html')
     else:
         productlist = Product.objects.all()
-        context = {'products': productlist }
+        supplierlist = Supplier.objects.all()
+        context = {'products': productlist, 'suppliers': supplierlist}
         return render (request,"productlist.html",context)
 
 def addproduct(request):
-    if not request.user.is_authenticated:
-         return render(request, 'loginpage.html')
-    else:
         a = request.POST['productname']
         b = request.POST['packagesize']
         c = request.POST['unitprice']
@@ -98,9 +96,6 @@ def supplierlistview(request):
         return render (request,"supplierlist.html",context)
 
 def addsupplier(request):
-    if not request.user.is_authenticated:
-        return render (request, "loginpage.html")
-    else:
         a = request.POST['companyname']
         b = request.POST['contactname']
         c = request.POST['address']
@@ -139,3 +134,90 @@ def searchsuppliers(request):
     filtered = Supplier.objects.filter(companyname__icontains=search)
     context = {'suppliers': filtered}
     return render (request,"supplierlist.html",context)
+
+#Customer views
+def customerlistview(request):
+    if not request.user.is_authenticated:
+         return render(request, 'loginpage.html')
+    else:
+        customerlist = Customer.objects.all()
+        context = {'customers': customerlist }
+        return render (request,"customerlist.html",context)
+
+def addcustomer(request):
+        a = request.POST['customername']
+        b = request.POST['address']
+        c = request.POST['phone']
+        d = request.POST['email']
+        e = request.POST['country']
+        Customer(customername = a, address = b, phone = c, email = d, country = e).save()
+        return redirect(request.META['HTTP_REFERER'])
+
+
+def confirmdeletecustomer(request, id):
+    customer = Customer.objects.get(id = id)
+    context = {'customer': customer}
+    return render (request,"confirmdelcust.html",context)
+
+
+def deletecustomer(request, id):
+    Customer.objects.get(id = id).delete()
+    return redirect(productlistview)
+
+
+def edit_customer_get(request, id):
+        customer = Customer.objects.get(id = id)
+        context = {'customer': customer}
+        return render (request,"edit_cust.html",context)
+
+
+def edit_customer_post(request, id):
+        client = Customer.objects.get(id = id)
+        client.address = request.POST['address']
+        client.phone = request.POST['phone']
+        client.email = request.POST['email']
+        client.country = request.POST['country']
+        client.save()
+        return redirect(customerlistview)
+
+def searchcustomers(request):
+    search = request.POST['search']
+    filtered = Supplier.objects.filter(customername__icontains=search)
+    context = {'customers': filtered}
+    return render (request,"customerlist.html",context)
+
+# Car views
+def carlistview(request):
+    if not request.user.is_authenticated:
+         return render(request, 'loginpage.html')
+    else:
+        carlist = Car.objects.all()
+        supplierlist = Supplier.objects.all()
+        context = {'cars': carlist, 'suppliers': supplierlist}
+        return render (request,"carlist.html",context)
+
+def addcar(request):
+        a = request.POST['brand']
+        b = request.POST['model']
+        c = request.POST['licenseplate']
+        e = request.POST['owner']
+        Car(brand = a, model = b, licenseplate = c, owner = Supplier.objects.get(id = e)).save()
+        return redirect(request.META['HTTP_REFERER'])
+
+
+def confirmdeletecar(request, id):
+    car = Car.objects.get(id = id)
+    context = {'car': car}
+    return render (request,"confirmdelcar.html",context)
+
+
+def deletecar(request, id):
+    Product.objects.get(id = id).delete()
+    return redirect(carlistview)
+
+def cars_filtered(request, id):
+    carlist = Car.objects.all()
+    filteredcars = carlist.filter(owner = id)
+    context = {'cars': filteredcars}
+    return render (request,"carlist.html",context)
+

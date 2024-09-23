@@ -1,9 +1,13 @@
 <!DOCTYPE html>
+{% load static %}
 <html>
 
 <head>
-
-    <title>Products and vendors</title>
+    <title>
+        {% block title %}
+            EasyManage App
+        {% endblock %}
+    </title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -16,12 +20,51 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
-    {% load static %}
     <link rel="stylesheet" href="{%static 'style.css' %}">
 
 </head>
-
 <body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo03" aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <a class="navbar-brand" href="#">EasyManage App</a>
+      
+        <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
+          <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+            <li class="nav-item">
+              <a class="nav-link" href="/suppliers">Suppliers</a>
+            </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/products">Products</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/customers">Customers</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/cars">Cars</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="http://careeria.fi">Code professionals</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/admin">Admin Pages</a>
+                </li>
+            </ul>
+        {% if user.is_authenticated %}
+                <form class="form-inline my-2 my-lg-0" action="/logout">
+                    <button class="btn btn-outline-secondary">Logout</button>
+               </form>
+        </div>
+        {% endif %}
+      </nav>
+      <center>
+        {% block content %}
+        {% endblock %}
+      </center>
+</body>
+
+{% comment %} <body>
 
     <div class="container">
         <center>
@@ -30,7 +73,7 @@
                 <a class="btn btn-success btn-sm" href="/products">Manage products</a>
                 <a class="btn btn-info btn-sm" href="http://careeria.fi">Recruit code professionals</a>
                 <a class="btn btn-primary btn-sm" href="/admin">Admin pages</a>
-                <a class="btn btn-danger btn-sm">Logout</a>
+                <a class="btn btn-danger btn-sm" href="/logout">Logout</a>
             </div>
             {% block content %}
 
@@ -39,6 +82,6 @@
         </center>
     </div>
 
-</body>
+</body> {% endcomment %}
 
 </html>
